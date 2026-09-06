@@ -38,7 +38,6 @@ h1 {
 .one-work {
     height: 30%;
     width: 30%;
-    background-color: blueviolet;
     color: aliceblue;
     display: flex;
     align-items: center;
@@ -47,6 +46,11 @@ h1 {
     margin: 8px;
     font-size: xx-large;
     font-weight: bolder;
+    background: linear-gradient(
+        to right,
+        green 0%,
+        blueviolet 0%
+    );
 }
 #controls-panel {
     position: absolute;

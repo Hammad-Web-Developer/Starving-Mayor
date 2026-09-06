@@ -6,6 +6,10 @@ Status :-
 
 In development
 
+Note : At this point i can see nothing but repetetions in my code.
+       Buttons in footer merely work now.
+       Got the code in some structure.
+
 Author :-
 
 Hammad

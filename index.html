@@ -8,6 +8,7 @@
     <title>Starving Mayor</title>
 </head>
 <body>
+    <button id="start">start</button>
     <i class="fa-solid fa-address-book fa-2xl" style="color: rgb(75, 173, 75);"></i>
     <h1>Starving Mayor</h1>
     <div id="stats">
@@ -34,13 +35,13 @@
         <span>$ <span id="balance">10k</span></span>
         <br>
         <br>
-        <span>500</span>
+        <span id="people">500</span>
         <br>
         <br>
         <span>0 ships</span>
         <br>
         <br>
-        <span>0 %</span>
+        <span><span id="happyPerc">0</span> %</span>
         <br>
         <br>
         <span>10 min</span>
@@ -91,7 +92,7 @@
             <i class="fa-solid fa-money-bill-1-wave fa-lg control-icon" style="color: rgb(138, 43, 226);"></i>
             <span>Inc Taxes</span>
             <input type="range" min="1" max="3" value="1">
-            <button class="control-button"><span data-num="5">5</span> %</button>
+            <button class="control-button"><span data-num="10">10</span> %</button>
         </div>
         <div class="control">
             <i class="fa-solid fa-mars-double fa-lg control-icon" style="color: rgb(138, 43, 226);"></i>
