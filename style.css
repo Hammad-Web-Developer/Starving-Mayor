@@ -82,3 +82,91 @@ h1 {
     color: aliceblue;
     font-size: x-large;
 }
+#clearout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 5%;
+    top: 53%;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    background-color: rgb(7, 94, 94);
+    font-size: xx-large;
+    font-weight: bolder;
+    color: aliceblue;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+}
+#clearout:hover {
+    background: rgb(2, 73, 73);
+}
+.instructions {
+    position: fixed;
+    top: 10vh;
+    left: 15vw;
+    height: 80vh;
+    width: 70vw;
+    z-index: 2;
+    border-radius: 5%;
+    background: #1e293b;
+    color: #f8fafc;
+}
+#to-blur {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.65);
+    z-index: 1;
+    backdrop-filter: blur(3px);
+}
+#start {
+    position: absolute;
+    top: 85%;
+    left: 42.5%;
+    height: 10%;
+    width: 15%;
+    border-radius: 10%;
+    background: #3b82f6;  
+    color: white;
+    border: none;
+    font-size: x-large;
+    font-weight: bolder;
+}
+#start:hover , #game-over-ok:hover {
+    background: #2563eb;
+}
+.hidden {
+    display: none;
+}
+.game-over {
+    position: fixed;
+    top: 30vh;
+    left: 30vw;
+    height: 40vh;
+    width: 40vw;
+    z-index: 2;
+    border-radius: 5%;
+    background: #1e293b;
+    color: #f8fafc;
+}
+#game-over-ok {
+    position: absolute;
+    top: 73%;
+    left: 37.5%;
+    height: 18%;
+    width: 23%;
+    border-radius: 10%;
+    background: #3b82f6;  
+    color: white;
+    border: none;
+    font-size: x-large;
+    font-weight: bolder;
+}
+.game-over span {
+    font-size: xx-large;
+    font-weight: bolder;
+    position: absolute;
+    left: 33%;
+    top: 30%;
+}

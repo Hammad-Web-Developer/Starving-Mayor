@@ -8,7 +8,15 @@
     <title>Starving Mayor</title>
 </head>
 <body>
-    <button id="start">start</button>
+    <div id="to-blur">
+    <div class="instructions">
+    <button id="start">START</button>
+    </div>
+    <div class="game-over hidden">
+        <span>Game Over !</span>
+        <button id="game-over-ok">OK</button>
+    </div>
+    </div>
     <i class="fa-solid fa-address-book fa-2xl" style="color: rgb(75, 173, 75);"></i>
     <h1>Starving Mayor</h1>
     <div id="stats">
@@ -38,13 +46,13 @@
         <span id="people">500</span>
         <br>
         <br>
-        <span>0 ships</span>
+        <span><span id="ships">0</span> ships</span>
         <br>
         <br>
         <span><span id="happyPerc">0</span> %</span>
         <br>
         <br>
-        <span>10 min</span>
+        <span><span id="time">11</span> min</span>
     </div>
     <div id="works">
         <div class="one-work" id="houses">Houses</div>
@@ -56,6 +64,9 @@
         <div class="one-work" id="safety">Safety</div>
         <div class="one-work" id="taxes">Taxes</div>
         <div class="one-work" id="pollution">Pollution</div>
+    </div>
+    <div id="clearout">
+        CLEAN
     </div>
     <div id="controls-panel">
         <div class="control">

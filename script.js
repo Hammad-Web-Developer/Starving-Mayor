@@ -11,6 +11,12 @@ const industryDiv = document.getElementById("industries");
 const jobsDiv = document.getElementById("jobs");
 const businessDiv = document.getElementById("businesses");
 const safetyDiv = document.getElementById("safety");
+const clearout = document.getElementById("clearout");
+const toBlur = document.getElementById("to-blur");
+const instructions = document.querySelector(".instructions");
+const timer = document.getElementById("time");
+const shipCount = document.getElementById("ships");
+const gameOver = document.querySelector(".game-over");
 
 // Setting up local storage on game start 
 
@@ -31,6 +37,9 @@ start.addEventListener("click" , ()=>{
         "police": 0
     }
     localStorage.setItem("data" , JSON.stringify(data));
+    toBlur.classList.toggle("hidden");
+    instructions.classList.toggle("hidden");
+    countdown();
 });
 
 // Enabling range setters and balance deductions
@@ -209,8 +218,35 @@ function finalCalc(){
         people.innerText = data.population;
         localStorage.setItem("data" , JSON.stringify(data));
     }
-    let final = Math.floor(((((data.homies/data.population)*100)+((data.educated/data.population)*100)+((data.jobs/data.population)*100)+((data.health/data.population)*100))/4));
-    happyPerc.innerText = final;
+    const housing = Math.min(data.homies / data.population, 1);
+    const education = Math.min(data.educated / data.population, 1);
+    const jobsRate = Math.min(data.jobs / data.population, 1);
+    const healthRate = Math.min(data.health / data.population, 1);
+
+    const base =
+        housing * 0.30 +
+        education * 0.20 +
+        jobsRate * 0.25 +
+        healthRate * 0.25;
+
+    // Pollution hurts happiness
+    const pollutionPenalty = Math.min(data.pollution / 100, 0.30);
+
+    // Taxes hurts happiness
+
+    const taxPenalty = Math.min((data.taxes - 10) / 100, 0.20);
+
+    // Safety contributes a little
+    const safetyRate = Math.min(data.police / data.population, 1);
+    const safetyBonus = safetyRate * 0.10;
+
+    let happiness = (base - pollutionPenalty - taxPenalty + safetyBonus) * 100;
+
+    // Keep it between 0 and 99 normally
+    happiness = Math.max(0, Math.min(happiness, 99));
+
+    happyPerc.innerText = Math.floor(happiness);
+
 }
 
 // Function for setting div colors
@@ -336,4 +372,53 @@ function safety(){
         green ${final}%,
         blueviolet ${final}%
     )`;
+}
+
+// Function to clear out city
+
+function clean(){
+    let data = JSON.parse(localStorage.getItem("data"));
+    data.pollution = 0;
+    localStorage.setItem("data" , JSON.stringify(data));
+    let balance = balElement.innerText;
+    balance = Number(balance.replace(/k$/ , "000"));
+    if (balance < 2000){
+        alert("Insufficient balance");
+        return;
+    }
+    balance = JSON.stringify((balance-2000)).replace(/000$/ , "k");
+    balElement.innerText = balance;
+    finalCalc();
+    pollution();
+}
+
+// On clearout button click
+
+clearout.addEventListener("click",clean);
+
+// Function for game countdown
+
+function countdown(){
+    let time = Number(timer.innerText);
+    time--;
+    timer.innerText = time;
+    if (time === 0){
+        toBlur.classList.toggle("hidden");
+        gameOver.classList.toggle("hidden");
+        return;
+    } 
+    addShips();
+    setTimeout(countdown,2000);
+}
+
+// Function to add ships ready to export
+
+function addShips(){
+    let data = JSON.parse(localStorage.getItem("data"));
+    let number = data.industry * 2;
+    data.ships = number;
+    localStorage.setItem("data",JSON.stringify(data));
+    let shipAlready = Number(shipCount.innerText);
+    shipAlready += number;
+    shipCount.innerText=shipAlready;
 }

@@ -6,9 +6,7 @@ Status :-
 
 In development
 
-Note : At this point i can see nothing but repetetions in my code.
-       Buttons in footer merely work now.
-       Got the code in some structure.
+Note : All I have to say is that I can see a mere end.
 
 Author :-
 
