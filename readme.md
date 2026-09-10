@@ -6,7 +6,7 @@ Status :-
 
 In development
 
-Note : All I have to say is that I can see a mere end.
+Note : It's all working now , just needs a final touch .
 
 Author :-
 

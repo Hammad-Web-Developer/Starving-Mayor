@@ -17,6 +17,12 @@ const instructions = document.querySelector(".instructions");
 const timer = document.getElementById("time");
 const shipCount = document.getElementById("ships");
 const gameOver = document.querySelector(".game-over");
+const gameOverOk = document.getElementById("game-over-ok");
+const mexican = document.getElementById("MXN");
+const canadian = document.getElementById("CAD");
+const chinese = document.getElementById("CNY");
+const swiz = document.getElementById("CHF");
+const exchangeBtn = document.getElementById("exchange");
 
 // Setting up local storage on game start 
 
@@ -34,7 +40,8 @@ start.addEventListener("click" , ()=>{
         "business": 0,
         "taxes": 10,
         "pollution": 0,
-        "police": 0
+        "police": 0,
+        "currencies" : ["MXN","CAD","CNY","CHF"]
     }
     localStorage.setItem("data" , JSON.stringify(data));
     toBlur.classList.toggle("hidden");
@@ -80,7 +87,7 @@ button.addEventListener("click",()=>{
         hirePolice(finalPrice);
         setColor(eleName='police');
     } else if (name.innerText === 'Exp Products'){
-        expProducts(finalPrice,balance);
+        expProducts(finalPrice);
     }
 });
 });
@@ -198,13 +205,15 @@ function hirePolice(number) {
 
 // Function to export products
 
-function expProducts(ships,balance){
+function expProducts(ships){
     let data = JSON.parse(localStorage.getItem("data"));
     if (ships <= data.ships){
     data.ships -= ships;
-    let final = balance + (ships * 500);
-    balElement.innerText = final;
+    let shipAlready = Number(shipCount.innerText);
+    shipAlready -= ships;
+    shipCount.innerText=shipAlready;
     localStorage.setItem("data" , JSON.stringify(data));
+    addTradeMoney(ships);
     finalCalc();
     }
 }
@@ -406,9 +415,12 @@ function countdown(){
         toBlur.classList.toggle("hidden");
         gameOver.classList.toggle("hidden");
         return;
-    } 
+    } else if (time === 8 || time === 6 || time === 4 || time === 2){
+        deductTaxes();
+    }
+    deductSalaries();
     addShips();
-    setTimeout(countdown,2000);
+    setTimeout(countdown,60000);
 }
 
 // Function to add ships ready to export
@@ -416,9 +428,89 @@ function countdown(){
 function addShips(){
     let data = JSON.parse(localStorage.getItem("data"));
     let number = data.industry * 2;
-    data.ships = number;
+    data.ships += number;
     localStorage.setItem("data",JSON.stringify(data));
     let shipAlready = Number(shipCount.innerText);
     shipAlready += number;
     shipCount.innerText=shipAlready;
 }
+
+// Function to deduct tax money
+
+function deductTaxes(){
+    let data = JSON.parse(localStorage.getItem("data"));
+    let tax = (data.population) * (data.taxes * 0.5);
+    let balance = balElement.innerText;
+    balance = balance.replace(/k$/ , "000");
+    balance = Number(balance);
+    balance += tax;
+    balance = JSON.stringify(balance).replace(/000$/,"k");
+    balElement.innerText = balance; 
+}
+
+// Function to deduct police men pay
+
+function deductSalaries(){
+    let data = JSON.parse(localStorage.getItem("data"));
+    let pay = (data.police) * 20;
+    let balance = balElement.innerText;
+    balance = balance.replace(/k$/ , "000");
+    balance = Number(balance);
+    balance -= pay;
+    balance = JSON.stringify(balance).replace(/000$/,"k");
+    balElement.innerText = balance;
+}
+
+// When ok button is pressed on game over window
+
+gameOverOk.addEventListener("click",()=>{
+    gameOver.classList.toggle("hidden");
+    window.location.reload();
+});
+
+// Asynchronous function to add currency when ships are exported
+
+async function addTradeMoney(ships){
+    let data = JSON.parse(localStorage.getItem("data"));
+    let array = data.currencies;
+    let number = Math.floor(Math.random() * 4);
+    let name = array[number];
+    try {
+    let response = await fetch("https://api.exchangerate-api.com/v4/latest/USD");
+    let apiData = await response.json();
+    let obj = apiData.rates;
+    let money = obj[name] * (ships * 100);
+    let balanceEl = document.getElementById(name);
+    let balance = Number(balanceEl.innerText);
+    balance += money;
+    balanceEl.innerText = balance.toFixed(1);
+    } catch (error) {
+        alert(`An error occoured while fetching Currency Api : ${error}`);
+    }
+}
+
+// Asynchronous function to convert currency
+
+async function exchangeCurrency(){
+    try {
+    let response = await fetch("https://api.exchangerate-api.com/v4/latest/USD");
+    let data = await response.json();
+    let obj = data.rates;
+    let availableBalance = Number((balElement.innerText).replace(/k$/,"000"));
+    let MXNval = Number(mexican.innerText) / obj.MXN;
+    let CADval = Number(canadian.innerText) / obj.CAD;
+    let CNYval = Number(chinese.innerText) / obj.CNY;
+    let CHFval = Number(swiz.innerText) / obj.CHF;
+    let finalBalance = availableBalance + MXNval + CADval + CNYval + CHFval;
+    finalBalance = JSON.stringify(finalBalance).replace(/000$/,"k");
+    balElement.innerText = finalBalance;
+    mexican.innerText = 0;
+    canadian.innerText = 0;
+    chinese.innerText = 0;
+    swiz.innerText = 0;
+    } catch (error) {
+        alert(`An error occoured while fetching Currency Api : ${error}`);
+    }
+}
+
+exchangeBtn.addEventListener("click",exchangeCurrency);
