@@ -6,6 +6,7 @@
     position: absolute;
     top: 4%;
     left: 0.7%;
+    cursor: pointer;
 }
 h1 {
     text-align: center;
@@ -141,10 +142,10 @@ h1 {
 }
 .game-over {
     position: fixed;
-    top: 30vh;
-    left: 30vw;
-    height: 40vh;
-    width: 40vw;
+    top: 20vh;
+    left: 27.5vw;
+    height: 60vh;
+    width: 45vw;
     z-index: 2;
     border-radius: 5%;
     background: #1e293b;
@@ -152,9 +153,9 @@ h1 {
 }
 #game-over-ok {
     position: absolute;
-    top: 73%;
+    top: 80%;
     left: 37.5%;
-    height: 18%;
+    height: 15%;
     width: 23%;
     border-radius: 10%;
     background: #3b82f6;  
@@ -163,12 +164,12 @@ h1 {
     font-size: x-large;
     font-weight: bolder;
 }
-.game-over span {
+#game-over-text {
     font-size: xx-large;
     font-weight: bolder;
     position: absolute;
-    left: 33%;
-    top: 30%;
+    left: 35%;
+    top: 60%;
 }
 #exchange-currency {
     display: flex;
@@ -196,11 +197,39 @@ h1 {
     border-radius: 10%;
     border: none;
     padding: 5px;
-    margin: 0 0 4px 30px;
+    margin: 0 0 4px 45px;
     font-size: large;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: antiquewhite;
     cursor: pointer;
+}
+#exchange:hover {
+    background-color: rgb(221, 206, 189);
+}
+.points {
+    position: absolute;
+    left: 5%;
+    top: 5%;
+    height: 70%;
+    width: 90%;
+    font-size: large;
+}
+#guide-points {
+    top: 10%;
+}
+#stars {
+    position: absolute;
+    top: 10%;
+    left: 23%;
+    height: 40%;
+    width: 55%;
+}
+.star {
+    font-size: 100px;
+    padding: 10px;
+}
+.win {
+    color: rgb(75, 173, 75);
 }

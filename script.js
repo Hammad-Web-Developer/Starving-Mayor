@@ -11,6 +11,7 @@ const industryDiv = document.getElementById("industries");
 const jobsDiv = document.getElementById("jobs");
 const businessDiv = document.getElementById("businesses");
 const safetyDiv = document.getElementById("safety");
+const taxesDiv = document.getElementById("taxes");
 const clearout = document.getElementById("clearout");
 const toBlur = document.getElementById("to-blur");
 const instructions = document.querySelector(".instructions");
@@ -23,6 +24,11 @@ const canadian = document.getElementById("CAD");
 const chinese = document.getElementById("CNY");
 const swiz = document.getElementById("CHF");
 const exchangeBtn = document.getElementById("exchange");
+const guide = document.getElementById("guide");
+const showGuide = document.querySelector(".fa-address-book");
+const star1 = document.getElementById("star1");
+const star2 = document.getElementById("star2");
+const star3 = document.getElementById("star3");
 
 // Setting up local storage on game start 
 
@@ -47,6 +53,22 @@ start.addEventListener("click" , ()=>{
     toBlur.classList.toggle("hidden");
     instructions.classList.toggle("hidden");
     countdown();
+    taxes();
+});
+
+showGuide.addEventListener("click",()=>{
+    toBlur.classList.toggle("hidden");
+    guide.classList.toggle("hidden");
+});
+
+toBlur.addEventListener("click",()=>{
+    toBlur.classList.add("hidden");
+    guide.classList.add("hidden"); 
+});
+
+guide.addEventListener("click",()=>{
+    toBlur.classList.add("hidden");
+    guide.classList.add("hidden"); 
 });
 
 // Enabling range setters and balance deductions
@@ -101,7 +123,7 @@ function addHouses(price,balance) {
         return;
     }
     let data = JSON.parse(localStorage.getItem("data"));
-    let post = balance - price;
+    let post = Math.floor(balance - price);
     post = JSON.stringify(post).replace(/000$/ , "k");
     balElement.innerText = post;
     data.homies += (price / 270) * 20;
@@ -118,7 +140,7 @@ function addSchools(price,balance) {
         return;
     }
     let data = JSON.parse(localStorage.getItem("data"));
-    let post = balance - price;
+    let post = Math.floor(balance - price);
     post = JSON.stringify(post).replace(/000$/ , "k");
     balElement.innerText = post;
     data.educated += (price / 500) * 70;
@@ -136,7 +158,7 @@ function addHospitals(price,balance) {
         return;
     }
     let data = JSON.parse(localStorage.getItem("data"));
-    let post = balance - price;
+    let post = Math.floor(balance - price);
     post = JSON.stringify(post).replace(/000$/ , "k");
     balElement.innerText = post;
     data.health += (price / 700) * 100;
@@ -154,7 +176,7 @@ function addIndustry(price,balance) {
         return;
     }
     let data = JSON.parse(localStorage.getItem("data"));
-    let post = balance - price;
+    let post = Math.floor(balance - price);
     post = JSON.stringify(post).replace(/000$/ , "k");
     balElement.innerText = post;
     data.industry += price / 800;
@@ -174,7 +196,7 @@ function giveLoan(price,balance) {
         return;
     }
     let data = JSON.parse(localStorage.getItem("data"));
-    let post = balance - price;
+    let post = Math.floor(balance - price);
     post = JSON.stringify(post).replace(/000$/ , "k");
     balElement.innerText = post;
     data.jobs += (price / 3000) * 6;
@@ -190,6 +212,7 @@ function increaseTax(percent){
     let data = JSON.parse(localStorage.getItem("data"));
     data.taxes += (data.taxes / 100) * percent;
     localStorage.setItem("data" , JSON.stringify(data));
+    taxes();
     finalCalc();
 }
 
@@ -226,6 +249,12 @@ function finalCalc(){
         data.population = data.homies;
         people.innerText = data.population;
         localStorage.setItem("data" , JSON.stringify(data));
+        schools();
+        jobs();
+        health();
+        business();
+        industry();
+        safety();
     }
     const housing = Math.min(data.homies / data.population, 1);
     const education = Math.min(data.educated / data.population, 1);
@@ -383,6 +412,18 @@ function safety(){
     )`;
 }
 
+// Function to color taxes
+
+function taxes(){
+    let data = JSON.parse(localStorage.getItem("data"));
+    let final = data.taxes * 2;
+    taxesDiv.style.background = `linear-gradient(
+        to right,
+        red ${final}%,
+        blueviolet ${final}%
+    )`;
+}
+
 // Function to clear out city
 
 function clean(){
@@ -395,7 +436,7 @@ function clean(){
         alert("Insufficient balance");
         return;
     }
-    balance = JSON.stringify((balance-2000)).replace(/000$/ , "k");
+    balance = JSON.stringify(Math.floor((balance-2000))).replace(/000$/ , "k");
     balElement.innerText = balance;
     finalCalc();
     pollution();
@@ -412,6 +453,7 @@ function countdown(){
     time--;
     timer.innerText = time;
     if (time === 0){
+        wonStars();
         toBlur.classList.toggle("hidden");
         gameOver.classList.toggle("hidden");
         return;
@@ -420,7 +462,24 @@ function countdown(){
     }
     deductSalaries();
     addShips();
-    setTimeout(countdown,60000);
+    autoClean();
+    setTimeout(countdown,10000);
+}
+
+// Function to give winning stars
+
+function wonStars(){
+    let result = Number(happyPerc.innerText);
+    if (result >= 50 && result < 70){
+        star1.classList.add("win");
+    } else if (result >= 70 && result < 90){
+        star1.classList.add("win");
+        star2.classList.add("win");
+    } else if (result >= 90 ){
+        star1.classList.add("win");
+        star2.classList.add("win");
+        star3.classList.add("win");
+    }
 }
 
 // Function to add ships ready to export
@@ -444,6 +503,7 @@ function deductTaxes(){
     balance = balance.replace(/k$/ , "000");
     balance = Number(balance);
     balance += tax;
+    balance = Math.floor(balance);
     balance = JSON.stringify(balance).replace(/000$/,"k");
     balElement.innerText = balance; 
 }
@@ -457,8 +517,22 @@ function deductSalaries(){
     balance = balance.replace(/k$/ , "000");
     balance = Number(balance);
     balance -= pay;
+    if (balance < 0)
+        balance = 0;
+    balance = Math.floor(balance);
     balance = JSON.stringify(balance).replace(/000$/,"k");
     balElement.innerText = balance;
+}
+
+// Function to auto clean city
+
+function autoClean(){
+    let data = JSON.parse(localStorage.getItem("data"));
+    let balance = balElement.innerText;
+    balance = Number(balance.replace(/k$/ , "000"));
+    if (balance >= 2000 && data.pollution >= 100){
+        clean();
+    }
 }
 
 // When ok button is pressed on game over window
@@ -501,7 +575,7 @@ async function exchangeCurrency(){
     let CADval = Number(canadian.innerText) / obj.CAD;
     let CNYval = Number(chinese.innerText) / obj.CNY;
     let CHFval = Number(swiz.innerText) / obj.CHF;
-    let finalBalance = availableBalance + MXNval + CADval + CNYval + CHFval;
+    let finalBalance = Math.floor(availableBalance + MXNval + CADval + CNYval + CHFval);
     finalBalance = JSON.stringify(finalBalance).replace(/000$/,"k");
     balElement.innerText = finalBalance;
     mexican.innerText = 0;

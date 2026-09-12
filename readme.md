@@ -4,9 +4,7 @@ This is a logic heavy game that tests your judgment by assigning you the task of
 
 Status :-
 
-In development
-
-Note : It's all working now , just needs a final touch .
+V1 Completed !
 
 Author :-
 

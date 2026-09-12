@@ -10,10 +10,61 @@
 <body>
     <div id="to-blur">
     <div class="instructions">
+        <div class="points">
+            <pre>1. A house gives shelter to 20 people and increases pollution by 0.2
+
+2. A school gives education to 70 people, gives job to 10 and increases pollution by 3
+
+3. A hospital is enough for 100 people, gives job to 20 and increases pollution by 7
+
+4. Giving a loan of $3000 creates 3 businesses, gives job to 6 and increases pollution by 9
+
+5. An industry creates 5 businesses, 50 jobs, decreases health by 10 and increases pollution by 15
+
+6. An industry produces 2 ships per minute ready to export
+
+7. A tax of 10% gives you $5 per individual every 2 minutes
+
+8. Hiring 5 police men is enough for safety of 100 and $20/men is deducted from budget every minute
+
+9. Exporting a ship gives you foreign currency of worth $100
+
+10. A city cleanup costs you $2000 and it's necessary to increase overall happiness
+            </pre>
+        </div>
     <button id="start">START</button>
     </div>
+    <div id="guide" class="instructions hidden">
+        <div class="points" id="guide-points">
+            <pre>1. A house gives shelter to 20 people and increases pollution by 0.2
+
+2. A school gives education to 70 people, gives job to 10 and increases pollution by 3
+
+3. A hospital is enough for 100 people, gives job to 20 and increases pollution by 7
+
+4. Giving a loan of $3000 creates 3 businesses, gives job to 6 and increases pollution by 9
+
+5. An industry creates 5 businesses, 50 jobs, decreases health by 10 and increases pollution by 15
+
+6. An industry produces 2 ships per minute ready to export
+
+7. A tax of 10% gives you $5 per individual every 2 minutes
+
+8. Hiring 5 police men is enough for safety of 100 and $20/men is deducted from budget every minute
+
+9. Exporting a ship gives you foreign currency of worth $100
+
+10. A city cleanup costs you $2000 and it's necessary to increase overall happiness
+            </pre>
+        </div>
+    </div>
     <div class="game-over hidden">
-        <span>Game Over !</span>
+        <div id="stars">
+            <span class="star" id="star1">&#x2606;</span>
+            <span class="star" id="star2">&#x2606;</span>
+            <span class="star" id="star3">&#x2606;</span>
+        </div>
+        <span id="game-over-text">Game Over !</span>
         <button id="game-over-ok">OK</button>
     </div>
     </div>
